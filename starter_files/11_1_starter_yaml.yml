@@ -1,0 +1,28 @@
+# This YAML file is designed to fail. 
+# The typo in the npm install command will cause the pipeline to break. 
+# The system.debug variable is included to demonstrate the effect of verbose logging.
+
+
+variables:
+  - name: system.debug
+    value: 'true'
+
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '16.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install @types/expreess  # Intentional typo here
+  displayName: 'Install Dependencies'
+
+- script: |
+    npm run build
+  displayName: 'Build the Application'
